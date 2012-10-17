@@ -18,5 +18,7 @@
 @property(nonatomic, assign)NSInteger intvalue;
 @property(nonatomic, assign)long longValue;
 @property(nonatomic, assign)BOOL boolValue;
+@property(nonatomic, assign)signed char C;
+@property(nonatomic, assign)bool b;
 
 @end

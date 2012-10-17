@@ -32,10 +32,11 @@
     [super dealloc];
 }
 
-- (id)initWithName:(NSString *)name attributes:(NSString *)pAttributes
+- (id)initWithName:(NSString *)pName attributes:(NSString *)pAttributes
 {
     self = [super init];
     
+    self.name = pName;
     self.attributes = pAttributes;
     NSArray *attributeList = [self.attributes componentsSeparatedByString:@","];
     if(attributeList.count > 1){
@@ -51,6 +52,9 @@
 
 - (void)setValue:(NSString *)value targetObject:(id<NSObject>)obj
 {
+    if(self.accessType == RTPropertyAccessTypeReadOnly){
+        return;
+    }
     NSString *propertyName = self.name;
     RTPropertyType ptype = self.type;
     if(ptype != RTPropertyTypeUnknown){
@@ -72,8 +76,17 @@
             }
             [RuntimeUtils invokePropertySetterWithTargetObject:obj propertyName:propertyName value:&b];
         }else if(ptype == RTPropertyTypeChar){
-            unsigned char ch = [value characterAtIndex:0];
-            [RuntimeUtils invokePropertySetterWithTargetObject:obj propertyName:propertyName value:&ch];
+            NSString *lowerValue = [value lowercaseString];
+            if([lowerValue isEqualToString:@"true"] || [lowerValue isEqualToString:@"yes"] ){
+                BOOL b = YES;
+                [RuntimeUtils invokePropertySetterWithTargetObject:obj propertyName:propertyName value:&b];
+            }else if([lowerValue isEqualToString:@"no"] || [lowerValue isEqualToString:@"false"]){
+                BOOL b = NO;
+                [RuntimeUtils invokePropertySetterWithTargetObject:obj propertyName:propertyName value:&b];
+            }else{
+                unsigned char ch = [value characterAtIndex:0];
+                [RuntimeUtils invokePropertySetterWithTargetObject:obj propertyName:propertyName value:&ch];
+            }
         }else if(ptype == RTPropertyTypeCharPoint){
             // no implementation
         }else if(ptype == RTPropertyTypeClass){
@@ -137,6 +150,101 @@
 
 - (NSString *)getValueFromTargetObject:(id<NSObject>)obj
 {
+    NSString *propertyName = self.name;
+    RTPropertyType ptype = self.type;
+    
+    SEL targetSelector = [RuntimeUtils.class selectorForGetterWithPropertyName:propertyName];
+    if(![obj respondsToSelector:targetSelector]){
+        return nil;
+    }
+    
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[obj.class instanceMethodSignatureForSelector:targetSelector]];
+    invocation.target = obj;
+    invocation.selector = targetSelector;
+    [invocation invoke];
+    
+    if(ptype == RTPropertyTypeArray){
+        // no implementation
+    }else if(ptype == RTPropertyTypeBit){
+        // no implementation
+    }else if(ptype == RTPropertyTypeBOOL){
+        bool b;
+        [invocation getReturnValue:&b];
+        return [NSString stringWithFormat:@"%@", b == 0 ? @"NO" : @"YES"];
+    }else if(ptype == RTPropertyTypeChar){
+        char c;
+        [invocation getReturnValue:&c];
+        return [NSString stringWithFormat:@"%c", c];
+    }else if(ptype == RTPropertyTypeCharPoint){
+        // no implementation
+    }else if(ptype == RTPropertyTypeClass){
+        Class class;
+        [invocation getReturnValue:&class];
+        return NSStringFromClass(class);
+    }else if(ptype == RTPropertyTypeDouble){
+        double d;
+        [invocation getReturnValue:&d];
+        return [NSString stringWithFormat:@"%f", d];
+    }else if(ptype == RTPropertyTypeFloat){
+        float f;
+        [invocation getReturnValue:&f];
+        return [NSString stringWithFormat:@"%f", f];
+    }else if(ptype == RTPropertyTypeInt){
+        int i;
+        [invocation getReturnValue:&i];
+        return [NSString stringWithFormat:@"%d", i];
+    }else if(ptype == RTPropertyTypeLong){
+        long l;
+        [invocation getReturnValue:&l];
+        return [NSString stringWithFormat:@"%ld", l];
+    }else if(ptype == RTPropertyTypeLongLong){
+        long long l;
+        [invocation getReturnValue:&l];
+        return [NSString stringWithFormat:@"%lld", l];
+    }else if(ptype == RTPropertyTypeObject){
+        id obj;
+        [invocation getReturnValue:&obj];
+        return [NSString stringWithFormat:@"%@", obj];
+    }else if(ptype == RTPropertyTypePointerToType){
+        // no implementation
+    }else if(ptype == RTPropertyTypeSEL){
+        // no implementation
+        SEL sel;
+        [invocation getReturnValue:&sel];
+        return NSStringFromSelector(sel);
+    }else if(ptype == RTPropertyTypeShort){
+        short s;
+        [invocation getReturnValue:&s];
+        return [NSString stringWithFormat:@"%d", s];
+    }else if(ptype == RTPropertyTypeStructure){
+        // no implementation
+    }else if(ptype == RTPropertyTypeUnion){
+        // no implementation
+    }else if(ptype == RTPropertyTypeUnknown){
+        // no implementation
+    }else if(ptype == RTPropertyTypeUnsignedChar){
+        unsigned char c;
+        [invocation getReturnValue:&c];
+        return [NSString stringWithFormat:@"%c", c];
+    }else if(ptype == RTPropertyTypeUnsignedInt){
+        unsigned int i;
+        [invocation getReturnValue:&i];
+        return [NSString stringWithFormat:@"%d", i];
+    }else if(ptype == RTPropertyTypeUnsignedLong){
+        unsigned long l;
+        [invocation getReturnValue:&l];
+        return [NSString stringWithFormat:@"%ld", l];
+    }else if(ptype == RTPropertyTypeUnsignedLongLong){
+        unsigned long long l;
+        [invocation getReturnValue:&l];
+        return [NSString stringWithFormat:@"%lld", l];
+    }else if(ptype == RTPropertyTypeUnsignedShort){
+        unsigned short s;
+        [invocation getReturnValue:&s];
+        return [NSString stringWithFormat:@"%d", s];
+    }else if(ptype == RTPropertyTypeVoid){
+        // no implementation
+    }
     return nil;
 }
 

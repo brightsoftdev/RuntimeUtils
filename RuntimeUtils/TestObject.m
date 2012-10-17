@@ -19,4 +19,10 @@
     [super dealloc];
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%f, %@, %@, %@, %@, %d, %ld, %@, %c",
+            self.floatValue, self.stringValue, self.readonly, self.retain, self.assign, self.intvalue, self.longValue, self.boolValue ? @"YES" : @"NO", self.C];
+}
+
 @end

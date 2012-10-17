@@ -11,8 +11,10 @@
 @interface RuntimeUtils : NSObject
 
 + (SEL)selectorForSetterWithPropertyName:(NSString *)propertyName;
++ (SEL)selectorForGetterWithPropertyName:(NSString *)propertyName;
 
-+ (void)invokePropertySetterWithTargetObject:(id<NSObject>)object propertyName:(NSString *)name value:(void *)value;
++ (void)invokePropertySetterWithTargetObject:(id<NSObject>)object propertyName:(NSString *)propertyName value:(void *)value;
++ (void *)invokePropertyGetterWithTargetObject:(id<NSObject>)object propertyName:(NSString *)propertyName;
 
 + (NSString *)descriptionOfObject:(id<NSObject>)obj;
 + (NSString *)descriptionOfObjectList:(NSArray *)objList;

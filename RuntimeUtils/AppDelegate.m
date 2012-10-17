@@ -33,15 +33,16 @@
     for(NSInteger i = 0; i < propertyCount; ++i){
         objc_property_t tmpProperty = *(propertyList + i);
         const char *tmpPropertyAttri = property_getAttributes(tmpProperty);
-        NSLog(@"%s", tmpPropertyAttri);
+//        NSLog(@"%s", tmpPropertyAttri);
         
-        RTProperty *p = [[RTProperty alloc] initWithName:[NSString stringWithUTF8String:property_getName(tmpProperty)]
-                                              attributes:[NSString stringWithUTF8String:tmpPropertyAttri]];
-        [p setValue:@"1" targetObject:obj];
+        RTProperty *p = [[[RTProperty alloc] initWithName:[NSString stringWithUTF8String:property_getName(tmpProperty)]
+                                              attributes:[NSString stringWithUTF8String:tmpPropertyAttri]] autorelease];
+        [p setValue:@"false" targetObject:obj];
+        NSLog(@"%@:%@", p.name, [p getValueFromTargetObject:obj]);
     }
     
-    NSLog(@"%f", obj.floatValue);
-    NSLog(@"%@", [RuntimeUtils descriptionOfObject:obj]);
+    NSLog(@"%@", obj);
+    
     
     return YES;
 }

@@ -13,11 +13,19 @@
 
 + (SEL)selectorForSetterWithPropertyName:(NSString *)propertyName
 {
-    if(propertyName.length > 1){
+    if(propertyName.length > 0){
         NSString *firstLetter = [propertyName substringToIndex:1];
         firstLetter = [firstLetter uppercaseString];
         NSString *methodName = [NSString stringWithFormat:@"set%@%@:", firstLetter, [propertyName substringFromIndex:1]];
         return NSSelectorFromString(methodName);
+    }
+    return nil;
+}
+
++ (SEL)selectorForGetterWithPropertyName:(NSString *)propertyName
+{
+    if(propertyName.length > 0){
+        return NSSelectorFromString(propertyName);
     }
     return nil;
 }
