@@ -7,6 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "TestObject.h"
+#import <objc/runtime.h>
+#import "RuntimeUtils.h"
+#import "RTProperty.h"
 
 @implementation AppDelegate
 
@@ -22,6 +26,23 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    TestObject *obj = [[TestObject new] autorelease];
+    unsigned int propertyCount = 0;
+    objc_property_t *propertyList = class_copyPropertyList(TestObject.class, &propertyCount);
+    for(NSInteger i = 0; i < propertyCount; ++i){
+        objc_property_t tmpProperty = *(propertyList + i);
+        const char *tmpPropertyAttri = property_getAttributes(tmpProperty);
+        NSLog(@"%s", tmpPropertyAttri);
+        
+        RTProperty *p = [[RTProperty alloc] initWithName:[NSString stringWithUTF8String:property_getName(tmpProperty)]
+                                              attributes:[NSString stringWithUTF8String:tmpPropertyAttri]];
+        [p setValue:@"1" targetObject:obj];
+    }
+    
+    NSLog(@"%f", obj.floatValue);
+    NSLog(@"%@", [RuntimeUtils descriptionOfObject:obj]);
+    
     return YES;
 }
 
