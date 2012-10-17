@@ -8,6 +8,7 @@
 
 #import "RuntimeUtils.h"
 #import <objc/runtime.h>
+#import "RTProperty.h"
 
 @implementation RuntimeUtils
 
@@ -42,34 +43,54 @@
     }
 }
 
++ (NSString *)fixValueFormat:(NSString *)value
+{
+    NSMutableDictionary *replaceDict = [NSMutableDictionary dictionary];
+    [replaceDict setObject:@"\\n" forKey:@"\n"];
+    [replaceDict setObject:@"\\t" forKey:@"\t"];
+    
+    NSArray *allKeys = [replaceDict allKeys];
+    for(NSString *key in allKeys){
+        value = [value stringByReplacingOccurrencesOfString:key withString:[replaceDict objectForKey:key]];
+    }
+    return value;
+}
+
 + (NSString *)descriptionOfObject:(id<NSObject>)obj
 {
-    NSMutableString *desc = [NSMutableString stringWithFormat:@"%@{", NSStringFromClass(obj.class)];
+    NSMutableString *desc = [NSMutableString stringWithFormat:@"%@{\n", NSStringFromClass(obj.class)];
     
     unsigned int property_count = 0;
     objc_property_t *property_list = class_copyPropertyList(obj.class, &property_count);
+    
+    RTProperty *tmpProperty = [[[RTProperty alloc] initWithProperty:NULL] autorelease];
+    
     for(NSInteger i = 0; i < property_count; ++i){
-        NSString *propertyName = [NSString stringWithUTF8String:property_getName(*(property_list + i))];
-        NSString *propertyAttri = [NSString stringWithUTF8String:property_getAttributes(*(property_list + i))];
-        
-        if([propertyAttri hasPrefix:@"T@"]){
-            SEL targetSEL = NSSelectorFromString(propertyName);
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[obj.class instanceMethodSignatureForSelector:targetSEL]];
-            [invocation setSelector:targetSEL];
-            [invocation setTarget:obj];
-            [invocation invoke];
-            id value;
-            [invocation getReturnValue:&value];
-            if([value rangeOfString:@"\n"].location != NSNotFound){
-                [desc appendFormat:@"[%@]:%@\n", propertyName, value];
-            }else{
-                [desc appendFormat:@"[%@]:%@\t", propertyName, value];
-            }
+        tmpProperty.objc_property = *(property_list + i);
+        NSString *value = [tmpProperty getStringFromTargetObject:obj];
+        if([value rangeOfString:@"\n"].location != NSNotFound){
+            [desc appendFormat:@"\t\"%@\" : [\n\t\t%@\n\t]\n", tmpProperty.name, [value stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t\t"]];
+        }else{
+            [desc appendFormat:@"\t\"%@\" : %@\n", tmpProperty.name, value];
         }
     }
     [desc appendString:@"}"];
     
     return desc;
+    
+//    NSMutableDictionary *tmpDict = [NSMutableDictionary dictionary];
+//    unsigned int property_count = 0;
+//    objc_property_t *property_list = class_copyPropertyList(obj.class, &property_count);
+//    
+//    RTProperty *tmpProperty = [[[RTProperty alloc] initWithProperty:NULL] autorelease];
+//    
+//    for(NSInteger i = 0; i < property_count; ++i){
+//        tmpProperty.objc_property = *(property_list + i);
+//        NSString *value = [tmpProperty getStringFromTargetObject:obj];
+//        [tmpDict setValue:value forKey:tmpProperty.name];
+//    }
+//    
+//    return [NSString stringWithFormat:@"%@%@", NSStringFromClass(obj.class), tmpDict.description];
 }
 
 + (NSString *)descriptionOfObjectList:(NSArray *)objList

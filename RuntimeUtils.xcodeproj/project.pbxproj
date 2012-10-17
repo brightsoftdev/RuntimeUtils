@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E9D0C22162EF4CC00C3FDCE /* TestObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9D0C21162EF4CC00C3FDCE /* TestObj.m */; };
 		3EF3F524162E9E8C00E141D5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF3F523162E9E8C00E141D5 /* UIKit.framework */; };
 		3EF3F526162E9E8C00E141D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF3F525162E9E8C00E141D5 /* Foundation.framework */; };
 		3EF3F528162E9E8C00E141D5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF3F527162E9E8C00E141D5 /* CoreGraphics.framework */; };
@@ -22,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3E9D0C20162EF4CC00C3FDCE /* TestObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestObj.h; sourceTree = "<group>"; };
+		3E9D0C21162EF4CC00C3FDCE /* TestObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestObj.m; sourceTree = "<group>"; };
 		3EF3F51F162E9E8C00E141D5 /* RuntimeUtils.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RuntimeUtils.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EF3F523162E9E8C00E141D5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3EF3F525162E9E8C00E141D5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -91,6 +94,8 @@
 				3EF3F533162E9E8C00E141D5 /* AppDelegate.m */,
 				3EF3F543162E9EFA00E141D5 /* TestObject.h */,
 				3EF3F544162E9EFA00E141D5 /* TestObject.m */,
+				3E9D0C20162EF4CC00C3FDCE /* TestObj.h */,
+				3E9D0C21162EF4CC00C3FDCE /* TestObj.m */,
 				3EF3F546162EA0D000E141D5 /* RTProperty.h */,
 				3EF3F547162EA0D000E141D5 /* RTProperty.m */,
 				3EF3F549162EAC7100E141D5 /* RuntimeUtils.h */,
@@ -184,6 +189,7 @@
 				3EF3F545162E9EFA00E141D5 /* TestObject.m in Sources */,
 				3EF3F548162EA0D000E141D5 /* RTProperty.m in Sources */,
 				3EF3F54B162EAC7200E141D5 /* RuntimeUtils.m in Sources */,
+				3E9D0C22162EF4CC00C3FDCE /* TestObj.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

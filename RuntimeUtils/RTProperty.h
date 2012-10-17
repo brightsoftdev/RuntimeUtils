@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <objc/runtime.h>
 
 typedef enum{
     RTPropertyTypeObject,
@@ -42,13 +43,14 @@ typedef enum{
 
 @interface RTProperty : NSObject
 
-- (id)initWithName:(NSString *)name attributes:(NSString *)attributes;
+- (id)initWithProperty:(objc_property_t)property;
 
-@property(nonatomic, copy)NSString *name;
-@property(nonatomic, assign)RTPropertyType type;
-@property(nonatomic, assign)RTPropertyAccessType accessType;
+@property(nonatomic, assign)objc_property_t objc_property;
+@property(nonatomic, readonly)NSString *name;
+@property(nonatomic, readonly)RTPropertyType type;
+@property(nonatomic, readonly)RTPropertyAccessType accessType;
 
-- (void)setValue:(NSString *)value targetObject:(id<NSObject>)obj;
-- (NSString *)getValueFromTargetObject:(id<NSObject>)obj;
+- (void)setWithString:(NSString *)string targetObject:(id<NSObject>)obj;
+- (NSString *)getStringFromTargetObject:(id<NSObject>)obj;
 
 @end

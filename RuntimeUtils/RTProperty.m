@@ -18,6 +18,7 @@
 
 @implementation RTProperty
 
+@synthesize objc_property;
 @synthesize name;
 @synthesize type;
 @synthesize accessType;
@@ -26,31 +27,44 @@
 
 - (void)dealloc
 {
-    self.name = nil;
-    self.attributes = nil;
+    [name release];
+    [attributes release];
     self.objectTypeName = nil;
     [super dealloc];
 }
 
-- (id)initWithName:(NSString *)pName attributes:(NSString *)pAttributes
+- (id)initWithProperty:(objc_property_t)property
 {
     self = [super init];
     
-    self.name = pName;
-    self.attributes = pAttributes;
-    NSArray *attributeList = [self.attributes componentsSeparatedByString:@","];
-    if(attributeList.count > 1){
-        self.type = [self.class typeOfDesc:[attributeList objectAtIndex:0]];
-        if(self.type == RTPropertyTypeObject){
-            self.objectTypeName = [self.class objectTypeNameOfDesc:[attributeList objectAtIndex:0]];
-        }
-        self.accessType = [self.class accessTypeOfDesc:[attributeList objectAtIndex:1]];
-    }
+    self.objc_property = property;
     
     return self;
 }
 
-- (void)setValue:(NSString *)value targetObject:(id<NSObject>)obj
+- (void)setObjc_property:(objc_property_t)property
+{
+    objc_property = property;
+    
+    if(objc_property){
+        const char *cname = property_getName(property);
+        const char *cattributes = property_getAttributes(property);
+        
+        name = [[NSString stringWithFormat:@"%s", cname] retain];
+        attributes = [[NSString stringWithFormat:@"%s", cattributes] retain];
+        
+        NSArray *attributeList = [self.attributes componentsSeparatedByString:@","];
+        if(attributeList.count > 1){
+            type = [self.class typeOfDesc:[attributeList objectAtIndex:0]];
+            if(self.type == RTPropertyTypeObject){
+                self.objectTypeName = [self.class objectTypeNameOfDesc:[attributeList objectAtIndex:0]];
+            }
+            accessType = [self.class accessTypeOfDesc:[attributeList objectAtIndex:1]];
+        }
+    }
+}
+
+- (void)setWithString:(NSString *)value targetObject:(id<NSObject>)obj
 {
     if(self.accessType == RTPropertyAccessTypeReadOnly){
         return;
@@ -148,7 +162,7 @@
     }
 }
 
-- (NSString *)getValueFromTargetObject:(id<NSObject>)obj
+- (NSString *)getStringFromTargetObject:(id<NSObject>)obj
 {
     NSString *propertyName = self.name;
     RTPropertyType ptype = self.type;

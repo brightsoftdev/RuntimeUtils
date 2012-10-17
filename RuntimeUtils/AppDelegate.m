@@ -11,6 +11,7 @@
 #import <objc/runtime.h>
 #import "RuntimeUtils.h"
 #import "RTProperty.h"
+#import "TestObj.h"
 
 @implementation AppDelegate
 
@@ -32,18 +33,22 @@
     objc_property_t *propertyList = class_copyPropertyList(TestObject.class, &propertyCount);
     for(NSInteger i = 0; i < propertyCount; ++i){
         objc_property_t tmpProperty = *(propertyList + i);
-        const char *tmpPropertyAttri = property_getAttributes(tmpProperty);
-//        NSLog(@"%s", tmpPropertyAttri);
         
-        RTProperty *p = [[[RTProperty alloc] initWithName:[NSString stringWithUTF8String:property_getName(tmpProperty)]
-                                              attributes:[NSString stringWithUTF8String:tmpPropertyAttri]] autorelease];
-        [p setValue:@"false" targetObject:obj];
-        NSLog(@"%@:%@", p.name, [p getValueFromTargetObject:obj]);
+        RTProperty *p = [[[RTProperty alloc] initWithProperty:tmpProperty] autorelease];
+        [p setWithString:@"sds32\t21\t232\n13s\nwqw测试" targetObject:obj];
+        NSLog(@"%@:%@", p.name, [p getStringFromTargetObject:obj]);
     }
     
     NSLog(@"%@", obj);
+    NSLog(@"%@", [RuntimeUtils descriptionOfObject:obj]);
     
-    
+    TestObj *tobj = [[[TestObj alloc] init] autorelease];
+    NSLog(@"%@", [RuntimeUtils descriptionOfObject:tobj]);
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:@"test\n\nse\nt", @"test",
+                          @"test\n\nse\nt", @"test",
+                          @"test\n\nse\nt", @"test", 
+                          nil];
+    NSLog(@"%@", dict);
     return YES;
 }
 
