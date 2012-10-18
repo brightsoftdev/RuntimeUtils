@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3E9D0C22162EF4CC00C3FDCE /* TestObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9D0C21162EF4CC00C3FDCE /* TestObj.m */; };
+		3EBAED64162FB4A40046D59B /* TBXML.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBAED63162FB4A40046D59B /* TBXML.m */; };
+		3EBAED66162FB4B20046D59B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EBAED65162FB4B20046D59B /* libz.dylib */; };
+		3EBAED69162FB6410046D59B /* XMLObjectUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBAED68162FB6410046D59B /* XMLObjectUtils.m */; };
 		3EF3F524162E9E8C00E141D5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF3F523162E9E8C00E141D5 /* UIKit.framework */; };
 		3EF3F526162E9E8C00E141D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF3F525162E9E8C00E141D5 /* Foundation.framework */; };
 		3EF3F528162E9E8C00E141D5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF3F527162E9E8C00E141D5 /* CoreGraphics.framework */; };
@@ -25,6 +28,11 @@
 /* Begin PBXFileReference section */
 		3E9D0C20162EF4CC00C3FDCE /* TestObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestObj.h; sourceTree = "<group>"; };
 		3E9D0C21162EF4CC00C3FDCE /* TestObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestObj.m; sourceTree = "<group>"; };
+		3EBAED62162FB4A40046D59B /* TBXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBXML.h; sourceTree = "<group>"; };
+		3EBAED63162FB4A40046D59B /* TBXML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBXML.m; sourceTree = "<group>"; };
+		3EBAED65162FB4B20046D59B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		3EBAED67162FB6410046D59B /* XMLObjectUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLObjectUtils.h; sourceTree = "<group>"; };
+		3EBAED68162FB6410046D59B /* XMLObjectUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLObjectUtils.m; sourceTree = "<group>"; };
 		3EF3F51F162E9E8C00E141D5 /* RuntimeUtils.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RuntimeUtils.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EF3F523162E9E8C00E141D5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3EF3F525162E9E8C00E141D5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -51,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EBAED66162FB4B20046D59B /* libz.dylib in Frameworks */,
 				3EF3F524162E9E8C00E141D5 /* UIKit.framework in Frameworks */,
 				3EF3F526162E9E8C00E141D5 /* Foundation.framework in Frameworks */,
 				3EF3F528162E9E8C00E141D5 /* CoreGraphics.framework in Frameworks */,
@@ -60,9 +69,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3EBAED5F162FB4940046D59B /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				3EBAED61162FB49C0046D59B /* TBXML */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		3EBAED61162FB49C0046D59B /* TBXML */ = {
+			isa = PBXGroup;
+			children = (
+				3EBAED62162FB4A40046D59B /* TBXML.h */,
+				3EBAED63162FB4A40046D59B /* TBXML.m */,
+			);
+			name = TBXML;
+			sourceTree = "<group>";
+		};
 		3EF3F514162E9E8C00E141D5 = {
 			isa = PBXGroup;
 			children = (
+				3EBAED65162FB4B20046D59B /* libz.dylib */,
+				3EBAED5F162FB4940046D59B /* Libraries */,
 				3EF3F529162E9E8C00E141D5 /* RuntimeUtils */,
 				3EF3F522162E9E8C00E141D5 /* Frameworks */,
 				3EF3F520162E9E8C00E141D5 /* Products */,
@@ -100,6 +128,8 @@
 				3EF3F547162EA0D000E141D5 /* RTProperty.m */,
 				3EF3F549162EAC7100E141D5 /* RuntimeUtils.h */,
 				3EF3F54A162EAC7100E141D5 /* RuntimeUtils.m */,
+				3EBAED67162FB6410046D59B /* XMLObjectUtils.h */,
+				3EBAED68162FB6410046D59B /* XMLObjectUtils.m */,
 				3EF3F52A162E9E8C00E141D5 /* Supporting Files */,
 			);
 			path = RuntimeUtils;
@@ -190,6 +220,8 @@
 				3EF3F548162EA0D000E141D5 /* RTProperty.m in Sources */,
 				3EF3F54B162EAC7200E141D5 /* RuntimeUtils.m in Sources */,
 				3E9D0C22162EF4CC00C3FDCE /* TestObj.m in Sources */,
+				3EBAED64162FB4A40046D59B /* TBXML.m in Sources */,
+				3EBAED69162FB6410046D59B /* XMLObjectUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
